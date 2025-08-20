@@ -1,0 +1,4 @@
+kafka-python==2.0.2
+sseclient-py==1.7.2
+requests==2.31.0
+pyspark==3.4.1
