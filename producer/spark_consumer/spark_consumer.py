@@ -4,8 +4,8 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 from pyspark.sql.functions import from_json, col
 
 # Load environment variables from .env file
-MINIO_ACCESS_KEY = os.getenv("MINIO_ROOT_USER", "minioadmin")
-MINIO_SECRET_KEY = os.getenv("MINIO_ROOT_PASSWORD", "minioadmin")
+MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "minioadmin")
+MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "minioadmin")
 
 # S3-compatible (MinIO) settings
 MINIO_ENDPOINT = "http://minio:9000"
@@ -53,7 +53,7 @@ def main():
         StructField("user", StringType(), True),
         StructField("bot", BooleanType(), True),
         StructField("minor", BooleanType(), True),
-        StructField("patrolled", BooleanType(), True),
+        StructField("patrolled", StringType(), True),
         StructField("length", StructType([
             StructField("old", IntegerType(), True),
             StructField("new", IntegerType(), True)

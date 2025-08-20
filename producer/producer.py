@@ -1,15 +1,18 @@
 import json
+import os
 import time
 import sseclient
 import requests
 from kafka import KafkaProducer
+
+KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:29092")
 
 def create_producer():
     """Creates a Kafka producer instance."""
     while True:
         try:
             producer = KafkaProducer(
-                bootstrap_servers='localhost:29092',
+                bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
                 value_serializer=lambda v: json.dumps(v).encode('utf-8')
             )
             print("Kafka Producer connected successfully.")
