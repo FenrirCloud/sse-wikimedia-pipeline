@@ -48,11 +48,9 @@ services:
       - "8080:8080"
       - "7077:7077"
     volumes:
-      - ./spark_consumer:/opt/bitnami/spark/app
+      - ./producer/spark_consumer:/opt/bitnami/spark/app
     environment:
       - SPARK_MODE=master
-      # Add Spark packages for Kafka and S3
-      - SPARK_SUBMIT_ARGS=--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262
 
   spark-worker:
     image: bitnami/spark:3.4.1
@@ -61,31 +59,9 @@ services:
       - spark-master
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     volumes:
-      - ./spark_consumer:/opt/bitnami/spark/app
+      - ./producer/spark_consumer:/opt/bitnami/spark/app
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=1G
       - SPARK_WORKER_CORES=1
-      # Add Spark packages for Kafka and S3
-      - SPARK_SUBMIT_ARGS=--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262
-  
-  spark-consumer:
-    image: bitnami/spark:3.4
-    depends_on:
-      - kafka
-      - minio
-    volumes:
-      - ./producer/spark_consumer:/opt/bitnami/spark/app/spark_consumer
-    command: >
-      /opt/bitnami/spark/bin/spark-submit /opt/bitnami/spark/app/spark_consumer/spark_consumer.py
-    environment:
-      - MINIO_ENDPOINT=minio:9000
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-    networks:
-      - sse_network
-      
-networks:
-  default:
-    name: wikipedia_network
