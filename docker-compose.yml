@@ -40,6 +40,15 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":9001"
 
+  producer:
+    build: ./producer
+    container_name: producer
+    depends_on:
+      - kafka
+      - minio
+    env_file:
+      - ./.env
+
   spark-master:
     image: bitnami/spark:3.4.1
     container_name: spark-master
