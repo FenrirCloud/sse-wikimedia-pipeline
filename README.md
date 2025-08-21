@@ -116,9 +116,7 @@ Once the setup is complete, you can run the entire pipeline with the following c
     **Open a new terminal window** and run the following command to submit the Spark job. This job reads from Kafka and writes the processed data to MinIO.
     
     ```bash
-    docker-compose exec spark-master spark-submit \
-      --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1,org.apache.hadoop:hadoop-aws:3.3.4 \
-      /opt/bitnami/spark/app/spark_consumer.py
+    docker-compose exec spark-master spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.1,org.apache.hadoop:hadoop-aws:3.3.4 /opt/bitnami/spark/app/spark_consumer.py
     ```
 
 5.  **Monitor the Pipeline**
